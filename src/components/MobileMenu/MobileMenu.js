@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import styled from 'styled-components/macro';
+import styled, { css } from 'styled-components/macro';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 
 import { WEIGHTS } from '../../constants';
@@ -27,20 +27,32 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
       style={animations.overlay}
     >
       <Content aria-label="Menu" style={animations.content}>
-        <CloseButton onClick={onDismiss}>
+        <CloseButton onClick={onDismiss} n={0}>
           <Icon id="close" />
           <VisuallyHidden>Dismiss menu</VisuallyHidden>
         </CloseButton>
         <Filler />
         <Nav>
-          <NavLink href="/sale">Sale</NavLink>
-          <NavLink href="/new">New&nbsp;Releases</NavLink>
-          <NavLink href="/men">Men</NavLink>
-          <NavLink href="/women">Women</NavLink>
-          <NavLink href="/kids">Kids</NavLink>
-          <NavLink href="/collections">Collections</NavLink>
+          <NavLink href="/sale" n={1}>
+            Sale
+          </NavLink>
+          <NavLink href="/new" n={2}>
+            New&nbsp;Releases
+          </NavLink>
+          <NavLink href="/men" n={3}>
+            Men
+          </NavLink>
+          <NavLink href="/women" n={4}>
+            Women
+          </NavLink>
+          <NavLink href="/kids" n={5}>
+            Kids
+          </NavLink>
+          <NavLink href="/collections" n={6}>
+            Collections
+          </NavLink>
         </Nav>
-        <Footer>
+        <Footer n={7}>
           <SubLink href="/terms">Terms and Conditions</SubLink>
           <SubLink href="/privacy">Privacy Policy</SubLink>
           <SubLink href="/contact">Contact Us</SubLink>
@@ -49,6 +61,13 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
     </Overlay>
   );
 };
+
+const modalContentAnimation = (props) => css`
+  @media (prefers-reduced-motion: no-preference) {
+    animation: var(--modal-content-animation) 300ms both;
+    animation-delay: calc(500ms + 25ms * ${props.n});
+  }
+`;
 
 const Overlay = styled(DialogOverlay)`
   @keyframes fade-in {
@@ -93,11 +112,6 @@ const Content = styled(DialogContent)`
     animation: var(--modal-animation) cubic-bezier(0.25, 0, 0.1, 0.9)
       400ms both;
     animation-delay: 200ms;
-
-    & > * {
-      animation: var(--modal-content-animation) 300ms both;
-      animation-delay: 500ms;
-    }
   }
 `;
 
@@ -106,6 +120,8 @@ const CloseButton = styled(UnstyledButton)`
   top: 10px;
   right: 0;
   padding: 16px;
+
+  ${modalContentAnimation}
 `;
 
 const Nav = styled.nav`
@@ -124,6 +140,8 @@ const NavLink = styled.a`
   &:first-of-type {
     color: var(--color-secondary);
   }
+
+  ${modalContentAnimation}
 `;
 
 const Filler = styled.div`
@@ -135,6 +153,8 @@ const Footer = styled.footer`
   flex-direction: column;
   gap: 14px;
   justify-content: flex-end;
+
+  ${modalContentAnimation}
 `;
 
 const SubLink = styled.a`

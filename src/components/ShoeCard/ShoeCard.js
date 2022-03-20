@@ -78,24 +78,40 @@ const Wrapper = styled.article`
 `;
 
 const ImageWrapper = styled.div`
-  overflow: hidden;
   border-radius: 16px 16px 4px 4px;
-`;
-
-const Image = styled.img`
-  display: block;
-  width: 100%;
 
   @media (prefers-reduced-motion: no-preference) {
     transition: transform 400ms;
     transform-origin: 50% 75%;
     will-change: transform;
 
+    ::before {
+      content: '';
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      border-radius: inherit;
+      box-shadow: 0 8px 8px var(--color-gray-500);
+      opacity: 0;
+      transition: opacity 400ms;
+    }
+
     &:hover {
-      transform: scale(1.1);
+      transform: scale(1.02) translateY(-4px);
       transition-duration: 200ms;
+
+      ::before {
+        opacity: 1;
+        transition-duration: 200ms;
+      }
     }
   }
+`;
+
+const Image = styled.img`
+  display: block;
+  width: 100%;
+  border-radius: inherit;
 `;
 
 const Row = styled.div`
