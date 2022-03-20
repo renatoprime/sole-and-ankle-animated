@@ -1,6 +1,6 @@
 /* eslint-disable no-unused-vars */
 import React from 'react';
-import styled, { keyframes } from 'styled-components/macro';
+import styled from 'styled-components/macro';
 import { DialogOverlay, DialogContent } from '@reach/dialog';
 
 import { WEIGHTS } from '../../constants';
@@ -10,9 +10,23 @@ import Icon from '../Icon';
 import VisuallyHidden from '../VisuallyHidden';
 
 const MobileMenu = ({ isOpen, onDismiss }) => {
+  const animations = {
+    overlay: {
+      '--overlay-animation': isOpen ? 'fade-in' : undefined,
+    },
+    content: {
+      '--modal-animation': isOpen ? 'slide-in' : undefined,
+      '--modal-content-animation': isOpen ? 'fade-in' : undefined,
+    },
+  };
+
   return (
-    <Overlay isOpen={isOpen} onDismiss={onDismiss}>
-      <Content aria-label="Menu" isOpen={isOpen}>
+    <Overlay
+      isOpen={isOpen}
+      onDismiss={onDismiss}
+      style={animations.overlay}
+    >
+      <Content aria-label="Menu" style={animations.content}>
         <CloseButton onClick={onDismiss}>
           <Icon id="close" />
           <VisuallyHidden>Dismiss menu</VisuallyHidden>
@@ -36,25 +50,25 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
   );
 };
 
-const fadeIn = keyframes`
-  from {
-    opacity: 0;
-  }
-  to {
-    opacity: 1;
-  }
-`;
-
-const slideIn = keyframes`
-  from {
-    transform: translateX(100%);
-  }
-  to {
-    transform: translateX(0%);
-  }
-`;
-
 const Overlay = styled(DialogOverlay)`
+  @keyframes fade-in {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes slide-in {
+    from {
+      transform: translateX(100%);
+    }
+    to {
+      transform: translateX(0%);
+    }
+  }
+
   position: fixed;
   top: 0;
   left: 0;
@@ -64,7 +78,7 @@ const Overlay = styled(DialogOverlay)`
   display: flex;
   justify-content: flex-end;
 
-  animation: ${(props) => props.isOpen && fadeIn} 500ms;
+  animation: var(--overlay-animation) ease-out 400ms;
 `;
 
 const Content = styled(DialogContent)`
@@ -76,15 +90,14 @@ const Content = styled(DialogContent)`
   flex-direction: column;
 
   @media (prefers-reduced-motion: no-preference) {
-    & * {
-      animation: ${(props) => props.isOpen && fadeIn} 400ms both;
-      animation-delay: 400ms;
-    }
-  }
-
-  @media (prefers-reduced-motion: no-preference) {
-    animation: ${(props) => props.isOpen && slideIn} 400ms both;
+    animation: var(--modal-animation) cubic-bezier(0.25, 0, 0.1, 0.9)
+      400ms both;
     animation-delay: 200ms;
+
+    & > * {
+      animation: var(--modal-content-animation) 300ms both;
+      animation-delay: 500ms;
+    }
   }
 `;
 

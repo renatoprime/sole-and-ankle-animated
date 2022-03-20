@@ -145,9 +145,9 @@ const StyledNavLink = styled.a`
     color: var(--color-secondary);
   }
 
-  overflow: hidden;
-
   @media (prefers-reduced-motion: no-preference) {
+    overflow: hidden;
+
      ${NavLinkTextWrapper} {
         transition: transform 400ms;
         will-change: tranform;
