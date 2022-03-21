@@ -15,8 +15,10 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
       '--overlay-animation': isOpen ? 'fade-in' : undefined,
     },
     content: {
-      '--modal-animation': isOpen ? 'slide-in' : undefined,
-      '--modal-content-animation': isOpen ? 'fade-in' : undefined,
+      '--modal-animation': isOpen ? 'fade-in' : undefined,
+      '--modal-content-animation': isOpen
+        ? 'fade-in, slide-in'
+        : undefined,
     },
   };
 
@@ -64,8 +66,10 @@ const MobileMenu = ({ isOpen, onDismiss }) => {
 
 const modalContentAnimation = (props) => css`
   @media (prefers-reduced-motion: no-preference) {
-    animation: var(--modal-content-animation) 300ms both;
-    animation-delay: calc(500ms + 25ms * ${props.n});
+    animation: var(--modal-content-animation);
+    animation-duration: 400ms;
+    animation-fill-mode: both;
+    animation-delay: calc(300ms + 40ms * ${props.n});
   }
 `;
 
@@ -81,7 +85,7 @@ const Overlay = styled(DialogOverlay)`
 
   @keyframes slide-in {
     from {
-      transform: translateX(100%);
+      transform: translateX(10%);
     }
     to {
       transform: translateX(0%);
